@@ -1,0 +1,3 @@
+llama-index
+weaviate-client
+python-dotenv
