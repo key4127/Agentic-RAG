@@ -4,6 +4,7 @@ from .base import BaseVectorStorage
 import weaviate
 import weaviate.classes.config as wcc
 from weaviate.util import generate_uuid5
+from llama_index.vector_stores.weaviate import WeaviateVectorStore
 
 class WeaviateStorage(BaseVectorStorage):
 
@@ -29,6 +30,12 @@ class WeaviateStorage(BaseVectorStorage):
                     distance_metric=wcc.VectorDistances.COSINE
                 )
             )
+
+    def get_vector_store(self):
+        return WeaviateVectorStore(
+            weaviate_client=self.client, 
+            index_name=self.collection_name
+        )
 
     def add_nodes(self, nodes: List[BaseNode]) -> None:
         my_collection = self.client.collections.get(self.collection_name)

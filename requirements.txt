@@ -1,4 +1,6 @@
 llama-index
 weaviate-client
+llama-index-vector-stores-weaviate
 python-dotenv
 fastapi[standard]
+pydantic-settings
