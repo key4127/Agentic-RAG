@@ -56,3 +56,6 @@ class WeaviateStorage(BaseVectorStorage):
                     properties=properties,
                     vector=node.embedding
                 )
+
+    def close(self) -> None:
+        self.client.close()

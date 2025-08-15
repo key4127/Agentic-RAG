@@ -22,10 +22,11 @@ def get_vector_store_client() -> WeaviateStorage:
 def get_query_engine() -> BaseQueryEngine:
     global global_query_engine
     if global_query_engine is None:
-        settings = Settings()
-        embedding_model = EmbeddingModel(settings.embedding_model)
         weaviate_storage = get_vector_store_client()
         vector_store = weaviate_storage.get_vector_store()
-        global_index = VectorStoreIndex(vector_store=vector_store, embedding_model=embedding_model)
+        global_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
         global_query_engine = global_index.as_query_engine()
     return global_query_engine
+
+def close_all() -> None:
+    pass
