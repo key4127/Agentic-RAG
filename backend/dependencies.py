@@ -15,7 +15,8 @@ def get_vector_store_client() -> WeaviateStorage:
             name=settings.weaviate_db_name, 
             model=settings.embedding_model, 
             host=settings.weaviate_host, 
-            port=settings.weaviate_port
+            http_port=settings.weaviate_http_port,
+            grpc_port=settings.weaviate_grpc_port
         )
     return vector_store_instance
 

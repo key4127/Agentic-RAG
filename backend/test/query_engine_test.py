@@ -18,7 +18,8 @@ def query_engine_test(query: str) -> None:
         settings.weaviate_db_name, 
         settings.embedding_model,
         settings.weaviate_host,
-        settings.weaviate_port
+        settings.weaviate_http_port,
+        settings.weaviate_grpc_port
     )
 
     LlamaIndexSettings.llm = OpenAILike(

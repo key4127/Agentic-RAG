@@ -1,19 +1,21 @@
 from typing import List
 from llama_index.core.schema import BaseNode
 from .base import BaseVectorStorage
-import weaviate
+# from backend.utils.decorators import singleton_decorator
 import weaviate.classes.config as wcc
+import weaviate
 from weaviate.util import generate_uuid5
 from llama_index.vector_stores.weaviate import WeaviateVectorStore
 
 class WeaviateStorage(BaseVectorStorage):
 
-    def __init__(self, name: str, model: str, host: str, port: int):
+    def __init__(self, name: str, model: str, host: str, http_port: int, grpc_port: int):
         self.model = model
         self.collection_name = name
         self.client = weaviate.connect_to_local(
             host=host,
-            port=port
+            port=http_port,
+            grpc_port=grpc_port,
         )
 
         if not self.client.collections.exists(self.collection_name):
@@ -59,3 +61,6 @@ class WeaviateStorage(BaseVectorStorage):
 
     def close(self) -> None:
         self.client.close()
+
+    #def __del__(self):
+    #    self.client.close()

@@ -13,7 +13,13 @@ Settings.llm = MockLLM()
 
 def process_job():
     embedding_model = EmbeddingModel("local:BAAI/bge-m3")
-    weaviate_model = WeaviateStorage("Agentic_RAG_Docs", "local:BAAI/bge-m3", "localhost", 8081)
+    weaviate_model = WeaviateStorage(
+        "Agentic_RAG_Docs", 
+        "local:BAAI/bge-m3", 
+        "localhost", 
+        8081,
+        50051
+    )
 
     with os.scandir(DATA_DIR) as entries: 
         for entry in entries:
