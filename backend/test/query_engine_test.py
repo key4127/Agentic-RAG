@@ -1,10 +1,10 @@
 import os
 from dotenv import load_dotenv
 from llama_index.core import Settings as LlamaIndexSettings
+from llama_index.llms.deepseek import DeepSeek
 from backend.dependencies import get_query_engine
 from backend.config import Settings
 from backend.core.embedding.embedding_model import EmbeddingModel
-from llama_index.llms.deepseek import DeepSeek
 
 query = "I want to learn about CS, please give me some resources. Please answer in Chinese."
 

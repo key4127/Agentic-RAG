@@ -5,6 +5,6 @@ async def query(query: str, query_engine: BaseQueryEngine):
     print(query)
     response = query_engine.query(query)
     return {
-       "query": query,
-       "answer": str(response)
+        "query": query,
+         "answer": str(response)
     }

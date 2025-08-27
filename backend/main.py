@@ -1,11 +1,22 @@
+import os
 from fastapi import FastAPI
-from .routers.query import router as query_router
+from contextlib import asynccontextmanager
+from llama_index.core import Settings as LlamaIndexSettings
+from llama_index.llms.deepseek import DeepSeek
+from backend.config import Settings
+from backend.core.embedding.embedding_model import EmbeddingModel
+from backend.routers.query import router as query_router
 
-app = FastAPI()
-app.include_router(query_router, prefix="")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    settings = Settings()
+    embedding_model = EmbeddingModel(settings.embedding_model)
+    LlamaIndexSettings.llm = DeepSeek(model="deepseek-chat", api_key=os.getenv("DEEPSEEK_API_KEY"))
+    LlamaIndexSettings.embed_model = embedding_model.get_embedding_model()
+    yield
 
-async def startup_event():
-    pass
+app = FastAPI(lifespan=lifespan)
+app.include_router(query_router, prefix="")    
 
 @app.get("/")
 async def root():
