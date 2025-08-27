@@ -62,5 +62,5 @@ class WeaviateStorage(BaseVectorStorage):
     def close(self) -> None:
         self.client.close()
 
-    #def __del__(self):
-    #    self.client.close()
+    def __del__(self):
+        self.client.close()

@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings as LlamaIndexSettings
+from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.llms.openai_like import OpenAILike
 from backend.dependencies import get_query_engine
 from backend.config import Settings
@@ -14,18 +14,11 @@ def query_engine_test(query: str) -> None:
 
     settings = Settings()
     embedding_model = EmbeddingModel(settings.embedding_model)
-    weaviate_storage = WeaviateStorage(
-        settings.weaviate_db_name, 
-        settings.embedding_model,
-        settings.weaviate_host,
-        settings.weaviate_http_port,
-        settings.weaviate_grpc_port
-    )
 
     LlamaIndexSettings.llm = OpenAILike(
         model="deepseek-chat",
         api_base="https://api.deepseek.com/beta",
-        api_key=os.getenv("DEEPSEEK_API_KEY")
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
     )
     LlamaIndexSettings.embed_model = embedding_model.get_embedding_model()
 
@@ -33,7 +26,5 @@ def query_engine_test(query: str) -> None:
 
     print(f"query: {query}")
     print(query_engine.query(query))
-
-    weaviate_storage.close()
 
 query_engine_test(query)
