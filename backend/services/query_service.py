@@ -1,9 +1,8 @@
-from fastapi import Depends
-from llama_index.core.query_engine import BaseQueryEngine
+from backend.core.agent.course_agent import CourseAgent
 
-async def query(query: str, query_engine: BaseQueryEngine):
+async def query(query: str, agent: CourseAgent):
     print(query)
-    response = query_engine.query(query)
+    response = agent.query(query)
     return {
         "query": query,
          "answer": str(response)

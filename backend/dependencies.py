@@ -1,13 +1,17 @@
+from fastapi import Depends
 from llama_index.core.query_engine import BaseQueryEngine
 from llama_index.core.base.base_retriever import BaseRetriever
 from llama_index.core import VectorStoreIndex
-from .core.embedding.embedding_model import EmbeddingModel
+from backend.core.tool.vector_tool import VectorTool 
+from backend.core.agent.course_agent import CourseAgent
 from .core.storage.weaviate import WeaviateStorage
 from .config import Settings
 
 vector_store_instance = None
 global_query_engine = None
 global_retriever = None
+vector_db_tool = None
+course_agent = None
 
 def get_vector_store_client() -> WeaviateStorage:
     global vector_store_instance
@@ -39,6 +43,22 @@ def get_retriever() -> BaseRetriever:
         global_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
         global_retriever = global_index.as_retriever()
     return global_retriever
+
+def get_vector_tool(
+    queryEngine: BaseQueryEngine = Depends(get_query_engine)
+) -> VectorTool:
+    global vector_db_tool
+    if vector_db_tool is None:
+        vector_db_tool = VectorTool(queryEngine)
+    return vector_db_tool
+
+def get_agent(
+    vector_tool: VectorTool = Depends(get_vector_tool)
+) -> CourseAgent:
+    global course_agent
+    if course_agent is None:
+        course_agent = CourseAgent(vector_tool)
+    return course_agent
 
 def close_all() -> None:
     pass
