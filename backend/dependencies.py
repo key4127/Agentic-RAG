@@ -1,6 +1,9 @@
 from fastapi import Depends
 from llama_index.core.query_engine import BaseQueryEngine
 from llama_index.core.base.base_retriever import BaseRetriever
+from llama_index.core.response_synthesizers import BaseSynthesizer
+from llama_index.core.response_synthesizers import ResponseMode
+from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
 from backend.core.tool.vector_tool import VectorTool 
 from backend.core.agent.course_agent import CourseAgent
@@ -10,6 +13,7 @@ from .config import Settings
 vector_store_instance = None
 global_query_engine = None
 global_retriever = None
+global_synthesizer = None
 vector_db_tool = None
 course_agent = None
 
@@ -44,12 +48,21 @@ def get_retriever() -> BaseRetriever:
         global_retriever = global_index.as_retriever()
     return global_retriever
 
+def get_synthesizer() -> BaseSynthesizer:
+    global global_synthesizer
+    if global_synthesizer is None:
+        global_synthesizer = get_response_synthesizer(
+            response_mode=ResponseMode.COMPACT
+        )
+    return global_synthesizer
+
 def get_vector_tool(
-    queryEngine: BaseQueryEngine = Depends(get_query_engine)
+    retriever = Depends(get_retriever),
+    synthesizer = Depends(get_synthesizer)
 ) -> VectorTool:
     global vector_db_tool
     if vector_db_tool is None:
-        vector_db_tool = VectorTool(queryEngine)
+        vector_db_tool = VectorTool(retriever, synthesizer)
     return vector_db_tool
 
 def get_agent(

@@ -5,5 +5,5 @@ async def query(query: str, agent: CourseAgent):
     response = agent.query(query)
     return {
         "query": query,
-         "answer": str(response)
+        "answer": str(response)
     }
