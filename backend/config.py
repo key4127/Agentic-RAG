@@ -4,6 +4,8 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     weaviate_db_name: str = "Agentic_RAG_Docs"
     embedding_model: str = "local:BAAI/bge-m3"
+    rerank_model: str = "ms-marco-TinyBERT-L-2-v2"
+    rerank_node_num: int = 10
     weaviate_host: str = "localhost"
     weaviate_http_port: int = 8081
     weaviate_grpc_port: int = 50051

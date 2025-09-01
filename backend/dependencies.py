@@ -1,7 +1,9 @@
 from fastapi import Depends
-from llama_index.core.query_engine import BaseQueryEngine
+from llama_index.core.query_engine import RetrieverQueryEngine
+from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.base.base_retriever import BaseRetriever
 from llama_index.core.response_synthesizers import BaseSynthesizer
+from llama_index.postprocessor.flashrank_rerank import FlashRankRerank
 from llama_index.core.response_synthesizers import ResponseMode
 from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
@@ -14,6 +16,8 @@ vector_store_instance = None
 global_query_engine = None
 global_retriever = None
 global_synthesizer = None
+flash_reranker = None
+
 vector_db_tool = None
 course_agent = None
 
@@ -30,13 +34,18 @@ def get_vector_store_client() -> WeaviateStorage:
         )
     return vector_store_instance
 
-def get_query_engine() -> BaseQueryEngine:
+def get_query_engine() -> RetrieverQueryEngine:
     global global_query_engine
     if global_query_engine is None:
         weaviate_storage = get_vector_store_client()
         vector_store = weaviate_storage.get_vector_store()
         global_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-        global_query_engine = global_index.as_query_engine()
+        retriever = global_index.as_retriever()
+        global_query_engine = RetrieverQueryEngine(
+            retriever=retriever,
+            node_postprocessors=[SimilarityPostprocessor(similarity_cutoff=0.95)],
+        )
+        #global_query_engine = global_index.as_query_engine()
     return global_query_engine
 
 def get_retriever() -> BaseRetriever:
@@ -56,13 +65,24 @@ def get_synthesizer() -> BaseSynthesizer:
         )
     return global_synthesizer
 
+def get_flash_reranker() -> FlashRankRerank:
+    global flash_reranker
+    if flash_reranker is None:
+        settings = Settings()
+        flash_reranker = FlashRankRerank(
+            model=settings.rerank_model,
+            top_n=settings.rerank_node_num
+        )
+    return flash_reranker
+
 def get_vector_tool(
     retriever = Depends(get_retriever),
+    reranker = Depends(get_flash_reranker),
     synthesizer = Depends(get_synthesizer)
 ) -> VectorTool:
     global vector_db_tool
     if vector_db_tool is None:
-        vector_db_tool = VectorTool(retriever, synthesizer)
+        vector_db_tool = VectorTool(retriever, reranker, synthesizer)
     return vector_db_tool
 
 def get_agent(
