@@ -7,7 +7,9 @@ from llama_index.postprocessor.flashrank_rerank import FlashRankRerank
 from llama_index.core.response_synthesizers import ResponseMode
 from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
-from backend.core.tool.vector_tool import VectorTool 
+
+from backend.core.tool.vector_tool import VectorTool
+from backend.core.tool.web_tool import WebTool
 from backend.core.agent.course_agent import CourseAgent
 from .core.storage.weaviate import WeaviateStorage
 from .config import Settings
@@ -19,6 +21,7 @@ global_synthesizer = None
 flash_reranker = None
 
 vector_db_tool = None
+web_tool = None
 course_agent = None
 
 def get_vector_store_client() -> WeaviateStorage:
@@ -85,12 +88,19 @@ def get_vector_tool(
         vector_db_tool = VectorTool(retriever, reranker, synthesizer)
     return vector_db_tool
 
+def get_web_tool() -> WebTool:
+    global web_tool
+    if web_tool is None:
+        web_tool = WebTool()
+    return web_tool
+
 def get_agent(
-    vector_tool: VectorTool = Depends(get_vector_tool)
+    vector_tool: VectorTool = Depends(get_vector_tool),
+    web_tool: WebTool = Depends(get_web_tool)
 ) -> CourseAgent:
     global course_agent
     if course_agent is None:
-        course_agent = CourseAgent(vector_tool)
+        course_agent = CourseAgent(vector_tool, web_tool)
     return course_agent
 
 def close_all() -> None:

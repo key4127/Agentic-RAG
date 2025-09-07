@@ -1,9 +1,16 @@
+from llama_index.tools.duckduckgo import DuckDuckGoSearchToolSpec
+
 class WebTool:
     def __init__(self):
-        pass
+        self._web_tool = DuckDuckGoSearchToolSpec()
 
-    async def _search_web(self, query: str):
-        pass
-
-    async def query(self, query: str):
-        search_result = self._search_web(query) 
+    async def search_web(self, query: str):
+        try:
+            search_result = await self._web_tool.duckduckgo_full_search(
+                query,
+                "zh-cn"
+            )
+            return search_result
+        except Exception as e:
+            print(f'web error: {e}')
+            return 'search failed'
