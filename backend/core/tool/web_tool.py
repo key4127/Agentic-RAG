@@ -1,16 +1,20 @@
-from llama_index.tools.duckduckgo import DuckDuckGoSearchToolSpec
+import os
+import json
+import http.client
 
 class WebTool:
     def __init__(self):
-        self._web_tool = DuckDuckGoSearchToolSpec()
+        self.conn = http.client.HTTPSConnection("google.serper.dev")
 
     async def search_web(self, query: str):
-        try:
-            search_result = await self._web_tool.duckduckgo_full_search(
-                query,
-                "zh-cn"
-            )
-            return search_result
-        except Exception as e:
-            print(f'web error: {e}')
-            return 'search failed'
+        payload = json.dumps({
+            "q": query
+        })
+        headers = {
+            "X-API-KEY": os.environ.get("SERPER_DEV_API_KEY"),
+            "Content-Type": "application/json"
+        }
+        self.conn.request("POST", "/search", payload, headers)
+        res = self.conn.getresponse()
+        data = res.read()
+        return data

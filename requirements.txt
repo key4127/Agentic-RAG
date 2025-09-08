@@ -3,7 +3,6 @@ llama-index-llms-deepseek==0.2.0
 llama-index-vector-stores-weaviate==1.4.0
 llama-index-embeddings-huggingface==0.6.0
 llama-index-postprocessor-flashrank-rerank==0.2.0
-llama_index-tools-duckduckgo==0.4.0
 weaviate-client==4.16.9
 python-dotenv==1.1.1
 fastapi==0.116.1
