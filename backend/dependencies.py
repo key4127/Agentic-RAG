@@ -1,4 +1,5 @@
 from fastapi import Depends
+from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.base.base_retriever import BaseRetriever
@@ -100,7 +101,8 @@ def get_agent(
 ) -> CourseAgent:
     global course_agent
     if course_agent is None:
-        course_agent = CourseAgent(vector_tool, web_tool)
+        llm = LlamaIndexSettings.llm
+        course_agent = CourseAgent(llm, vector_tool, web_tool)
     return course_agent
 
 def close_all() -> None:

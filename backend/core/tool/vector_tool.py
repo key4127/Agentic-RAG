@@ -15,6 +15,13 @@ class VectorTool:
         self._synthesizer = synthesizer
 
     def vector_db_search(self, query: str):
+        """
+        This is a tool function to retrieve docs that are related to queries.
+        Docs contains information about many famous courses \ 
+        for self learning computer science.
+        """
+        print("Use the vector tool.")
+
         nodes = self._retriever.retrieve(query)
         query_bundle = QueryBundle(query)
         filtered_nodes = self._reranker.postprocess_nodes(nodes, query_bundle)
@@ -27,4 +34,5 @@ class VectorTool:
             return ""
         
         response = self._synthesizer.synthesize(query, nodes)
+        print(response)
         return response

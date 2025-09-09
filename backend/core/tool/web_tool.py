@@ -7,6 +7,11 @@ class WebTool:
         self.conn = http.client.HTTPSConnection("google.serper.dev")
 
     async def search_web(self, query: str):
+        """
+        This is a tool function to search on the Internet.
+        """
+        print("Use the web tool.")
+
         payload = json.dumps({
             "q": query
         })
