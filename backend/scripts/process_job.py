@@ -12,6 +12,7 @@ DATA_DIR = Path("docs")
 Settings.llm = MockLLM()
 
 def process_job():
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
     embedding_model = EmbeddingModel("local:BAAI/bge-m3")
     weaviate_model = WeaviateStorage(
         "Agentic_RAG_Docs", 

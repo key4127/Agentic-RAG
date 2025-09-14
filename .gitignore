@@ -2,3 +2,4 @@ docs/
 origin docs/
 **/__pycache__/
 **/volumes/
+data/
