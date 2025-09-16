@@ -9,3 +9,4 @@ fastapi==0.116.1
 pydantic-settings==2.10.1
 httpx==0.28.1
 flashrank==0.2.10
+passlib[bcrypt]==4.3.0

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     weaviate_host: str = "localhost"
     weaviate_http_port: int = 8081
     weaviate_grpc_port: int = 50051
+    jwt_secret_key: str = "ff99dc45a84bd00c01ca7e725fde36cfe403587772c1d9458a5a7dbfc2daf80e"
 
     model_config = ConfigDict(
         env_file=".env",

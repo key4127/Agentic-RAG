@@ -9,7 +9,7 @@ def convert_to_csv(collection, output_path):
 
     with open(output_path, "w", newline="", encoding="utf-8") as output:
         writer = csv.writer(output)
-        writer.writerow(['num', 'UUID', 'title', 'category', 'text'])
+        writer.writerow(['UUID', 'title', 'category', 'text'])
 
         for batch_start in range(0, total_count, batch_size):
             result = collection.query.fetch_objects(
@@ -25,7 +25,6 @@ def convert_to_csv(collection, output_path):
                 text = properties.get('text', '') if properties else ''
                 
                 writer.writerow([
-                    i,
                     obj.uuid,
                     str(title),
                     str(category),
