@@ -2,10 +2,10 @@ import os
 from pathlib import Path
 from llama_index.core import Settings
 from llama_index.core.llms import MockLLM
-from backend.core.loading.document_loader import load_document
-from backend.core.loading.document_splitter import split_documents
-from backend.core.embedding.embedding_model import EmbeddingModel
-from backend.core.storage.weaviate import WeaviateStorage
+from api.core.loading.document_loader import load_document
+from api.core.loading.document_splitter import split_documents
+from api.core.embedding.embedding_model import EmbeddingModel
+from api.core.storage.weaviate import WeaviateStorage
 
 DATA_DIR = Path("docs")
 

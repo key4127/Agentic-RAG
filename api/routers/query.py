@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from backend.core.agent.course_agent import CourseAgent
-from backend.services.query_service import query as query_service
-from backend.dependencies import get_agent
+from api.core.agent.course_agent import CourseAgent
+from api.services.query_service import query as query_service
+from api.dependencies import get_agent
 
 router = APIRouter()
 

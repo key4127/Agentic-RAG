@@ -1,10 +1,10 @@
 from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.llms.deepseek import DeepSeek
 from llama_index.core.schema import QueryBundle
-from backend.config import Settings
-from backend.core.embedding.embedding_model import EmbeddingModel
-from backend.dependencies import get_retriever
-from backend.dependencies import get_flash_reranker
+from api.config import Settings
+from api.core.embedding.embedding_model import EmbeddingModel
+from api.dependencies import get_retriever
+from api.dependencies import get_flash_reranker
 import json
 import os
 

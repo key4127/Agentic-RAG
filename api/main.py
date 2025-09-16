@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.llms.deepseek import DeepSeek
-from backend.config import Settings
-from backend.core.embedding.embedding_model import EmbeddingModel
-from backend.routers.query import router as query_router
+from api.config import Settings
+from api.core.embedding.embedding_model import EmbeddingModel
+from api.routers.query import router as query_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -9,9 +9,9 @@ from llama_index.core.response_synthesizers import ResponseMode
 from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
 
-from backend.core.tool.vector_tool import VectorTool
-from backend.core.tool.web_tool import WebTool
-from backend.core.agent.course_agent import CourseAgent
+from api.core.tool.vector_tool import VectorTool
+from api.core.tool.web_tool import WebTool
+from api.core.agent.course_agent import CourseAgent
 from .core.storage.weaviate import WeaviateStorage
 from .config import Settings
 
