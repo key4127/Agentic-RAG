@@ -5,16 +5,14 @@ def generate_weaviate_data(input_path: str, output_path: str):
          open(output_path, "w", encoding="utf-8") as output:
         while True:
             line_q = input.readline()
-            line_a = input.readline()
             line_nodes = input.readline()
 
-            if not line_q or not line_a or not line_nodes:
+            if not line_q or not line_nodes:
                 break
 
             ids = line_nodes[:-1].split(',')
             content = {
                 "Q": line_q[slice(2, None, None)],
-                "A": line_a[slice(2, None, None)],
                 "ids": ids
             }
 
