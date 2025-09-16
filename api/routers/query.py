@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from api.core.agent.course_agent import CourseAgent
+from api.services.agent.course_agent import CourseAgent
 from api.services.query_service import query as query_service
 from api.dependencies import get_agent
 

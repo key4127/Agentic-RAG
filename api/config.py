@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     weaviate_http_port: int = 8081
     weaviate_grpc_port: int = 50051
     jwt_secret_key: str = "ff99dc45a84bd00c01ca7e725fde36cfe403587772c1d9458a5a7dbfc2daf80e"
-    pwd_context = CryptContext(schemes=["bycrpt"], deprecated="auto")
+    pwd_context: CryptContext = CryptContext(schemes=['bcrypt'], deprecated="auto")
     jwt_hash_algorithm: str = "HS256"
 
     model_config = ConfigDict(

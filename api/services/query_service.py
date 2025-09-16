@@ -1,4 +1,4 @@
-from api.core.agent.course_agent import CourseAgent
+from api.services.agent.course_agent import CourseAgent
 
 async def query(query: str, agent: CourseAgent):
     print(query)

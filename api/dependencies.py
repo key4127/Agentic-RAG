@@ -10,9 +10,9 @@ from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
 from llama_index.core.embeddings import resolve_embed_model
 
-from api.core.tool.vector_tool import VectorTool
-from api.core.tool.web_tool import WebTool
-from api.core.agent.course_agent import CourseAgent
+from api.services.tool.vector_tool import VectorTool
+from api.services.tool.web_tool import WebTool
+from api.services.agent.course_agent import CourseAgent
 from .weaviate import WeaviateStorage
 from .config import Settings
 

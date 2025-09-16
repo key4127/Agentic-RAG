@@ -1,6 +1,6 @@
 from llama_index.core.agent.workflow import FunctionAgent
-from api.core.tool.vector_tool import VectorTool
-from api.core.tool.web_tool import WebTool
+from api.services.tool.vector_tool import VectorTool
+from api.services.tool.web_tool import WebTool
 
 class CourseAgent():
     def __init__(
