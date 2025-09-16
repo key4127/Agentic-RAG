@@ -8,12 +8,15 @@ from llama_index.postprocessor.flashrank_rerank import FlashRankRerank
 from llama_index.core.response_synthesizers import ResponseMode
 from llama_index.core import get_response_synthesizer
 from llama_index.core import VectorStoreIndex
+from llama_index.core.embeddings import resolve_embed_model
 
 from api.core.tool.vector_tool import VectorTool
 from api.core.tool.web_tool import WebTool
 from api.core.agent.course_agent import CourseAgent
-from .core.storage.weaviate import WeaviateStorage
+from .weaviate import WeaviateStorage
 from .config import Settings
+
+embedding_model = None
 
 vector_store_instance = None
 global_query_engine = None
@@ -24,6 +27,13 @@ flash_reranker = None
 vector_db_tool = None
 web_tool = None
 course_agent = None
+
+def get_embedding_model():
+    global embedding_model
+    if embedding_model is None:
+        settings = Settings()
+        embedding_model = resolve_embed_model(settings.embedding_model)
+    return embedding_model
 
 def get_vector_store_client() -> WeaviateStorage:
     global vector_store_instance

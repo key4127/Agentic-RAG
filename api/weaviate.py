@@ -1,13 +1,8 @@
-from typing import List
-from llama_index.core.schema import BaseNode
-from .base import BaseVectorStorage
-# from backend.utils.decorators import singleton_decorator
 import weaviate.classes.config as wcc
 import weaviate
-from weaviate.util import generate_uuid5
 from llama_index.vector_stores.weaviate import WeaviateVectorStore
 
-class WeaviateStorage(BaseVectorStorage):
+class WeaviateStorage():
 
     def __init__(self, name: str, model: str, host: str, http_port: int, grpc_port: int):
         self.model = model
@@ -38,26 +33,6 @@ class WeaviateStorage(BaseVectorStorage):
             weaviate_client=self.client, 
             index_name=self.collection_name
         )
-
-    def add_nodes(self, nodes: List[BaseNode]) -> None:
-        my_collection = self.client.collections.get(self.collection_name)
-
-        with my_collection.batch.dynamic() as batch:
-            for node in nodes:
-                node_string = (f"{node.get_content()}|{node.metadata.get('title', '')}"
-                               f"|{node.metadata.get('number', '')}|{node.metadata.get('category', '')}")
-                uuid = generate_uuid5(node_string)
-                properties = {
-                    "text": node.get_content(),
-                    "title": node.metadata.get("title", ""),
-                    "number": node.metadata.get("number", ""),
-                    "category": node.metadata.get("category", "")
-                }
-                batch.add_object(
-                    uuid=uuid,
-                    properties=properties,
-                    vector=node.embedding
-                )
 
     def close(self) -> None:
         self.client.close()

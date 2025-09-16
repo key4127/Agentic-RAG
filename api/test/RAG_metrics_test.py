@@ -2,7 +2,7 @@ from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.llms.deepseek import DeepSeek
 from llama_index.core.schema import QueryBundle
 from api.config import Settings
-from api.core.embedding.embedding_model import EmbeddingModel
+from api.dependencies import get_embedding_model
 from api.dependencies import get_retriever
 from api.dependencies import get_flash_reranker
 import json
@@ -23,10 +23,8 @@ def metric_test(request_ids, get_ids):
     return len(right_nodes)
 
 def main():
-    settings = Settings()
-    embedding_model = EmbeddingModel(settings.embedding_model)
     LlamaIndexSettings.llm = DeepSeek(model="deepseek-chat", api_key=os.getenv("DEEPSEEK_API_KEY"))
-    LlamaIndexSettings.embed_model = embedding_model.get_embedding_model()
+    LlamaIndexSettings.embed_model = get_embedding_model()
 
     input_file = "./data/weaviate/weaviate.jsonl"
 
