@@ -28,6 +28,8 @@ vector_db_tool = None
 web_tool = None
 course_agent = None
 
+sql_session = None
+
 def get_embedding_model():
     global embedding_model
     if embedding_model is None:

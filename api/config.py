@@ -18,3 +18,10 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8"
     )
+    
+class DBSettings(BaseSettings):
+    sql_db_name: str = "Agentic_RAG"
+    sql_host: str = "localhost"
+    sql_port: int = 3306
+    sql_user: str = "root"
+    sql_password: str = "041206"
