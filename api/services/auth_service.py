@@ -1,5 +1,6 @@
 import jwt
 import bcrypt
+from typing import Optional
 from jwt.exceptions import InvalidTokenError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -47,12 +48,41 @@ async def register(name: str, password: str, session: SessionDep) -> bool:
     return True
 
 
-async def login(name: str, password: str):
-    pass
+async def login(name: str, password: str, session: SessionDep):
+    fail_result = {
+        "result": "fail",
+        "error": "wrong username or password"
+    }
+    success_result = {
+        "result": "success"
+    }
+
+    user = get_user_by_name(name, session)
+    
+    if user is None:
+        return fail_result
+    
+    auth = get_auth_by_id(user.id, session)
+
+    if auth is None:
+        return fail_result
+    
+    if not bcrypt.checkpw(
+        password.encode("utf-8"),
+        auth.password.encode("utf-8")
+    ):
+        return fail_result
+    else:
+        return success_result
 
 
 async def logout():
     pass
+
+
+def get_auth_by_id(id: str, session: SessionDep) -> Optional[UserAuth]:
+    auth = session.get(UserAuth, id)
+    return auth
 
 
 def create_auth(id: str, password: str, session: SessionDep):
