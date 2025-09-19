@@ -1,4 +1,5 @@
 import jwt
+import bcrypt
 from jwt.exceptions import InvalidTokenError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -55,9 +56,13 @@ async def logout():
 
 
 def create_auth(id: str, password: str, session: SessionDep):
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    hashed_pw = hashed.decode("utf-8")
+
     userAuth = UserAuth()
     userAuth.user_id = id
-    userAuth.password = password
+    userAuth.password = hashed_pw
 
     session.add(userAuth)
     session.commit()
