@@ -7,6 +7,7 @@ from llama_index.llms.deepseek import DeepSeek
 from api.config import Settings
 from api.mysql import create_sql_db_and_tables
 from api.routers.query import router as query_router
+from api.routers.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,7 +20,8 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
-app.include_router(query_router, prefix="")    
+app.include_router(query_router, prefix="")
+app.include_router(auth_router, prefix="")
 
 @app.get("/")
 async def root():

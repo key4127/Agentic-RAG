@@ -1,4 +1,6 @@
-from sqlmodel import create_engine, SQLModel
+from typing import Annotated
+from fastapi import Depends
+from sqlmodel import create_engine, SQLModel, Session
 from api.config import DBSettings
 
 db_settings = DBSettings()
@@ -8,3 +10,9 @@ sql_engine = create_engine(sql_url)
 
 def create_sql_db_and_tables():
     SQLModel.metadata.create_all(sql_engine)
+
+def get_session():
+    with Session(sql_engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]

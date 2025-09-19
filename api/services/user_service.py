@@ -1,31 +1,32 @@
-import jwt
-from jwt.exceptions import InvalidTokenError
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from api.config import Settings
-from api.auth import TokenData
+import uuid
+from typing import Optional
+from sqlmodel import select
+from api.mysql import SessionDep
+from api.models import User
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-def get_user_id(token = Depends(oauth2_scheme)):
-    settings = Settings()
+def get_user_by_id(id: str, session: SessionDep) -> Optional[User]:
+    user = session.get(User, id)
+    return user
 
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(
-            token, 
-            settings.jwt_secret_key, 
-            algorithms=[settings.jwt_hash_algorithm]
-        )
-        username = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except InvalidTokenError:
-        raise credentials_exception
-    # user = get_user(fake_users_db, username=token_data.username)
-    return user.
+
+def get_user_by_name(name: str, session: SessionDep) -> Optional[User]:
+    statement = select(User).where(User.name == name)
+    user = session.exec(statement=statement).first()
+    return user
+
+
+def create_user(name: str, session: SessionDep) -> Optional[User]:
+    if get_user_by_name(name, session) is not None:
+        return None
+    
+    id = uuid.uuid4()
+    user = User()
+    user.id = str(id)
+    user.name = name
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
