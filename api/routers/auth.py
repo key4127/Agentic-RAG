@@ -24,3 +24,8 @@ async def login(name: str, password: str, response: Response, session: SessionDe
     else:
         response.status_code = status.HTTP_401_UNAUTHORIZED
     return result
+
+
+@router.delete("/auth/logout", tags=["logout"])
+async def logout(session: SessionDep):
+    pass
