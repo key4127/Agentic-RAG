@@ -68,7 +68,7 @@ def get_retriever() -> BaseRetriever:
         weaviate_storage = get_vector_store_client()
         vector_store = weaviate_storage.get_vector_store()
         global_index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
-        global_retriever = global_index.as_retriever(similarity_top_k=5)
+        global_retriever = global_index.as_retriever(similarity_top_k=7)
     return global_retriever
 
 def get_synthesizer() -> BaseSynthesizer:

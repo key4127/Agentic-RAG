@@ -30,7 +30,7 @@ class VectorTool:
             print(node.score)
 
         if not filtered_nodes \
-           or all(node.score is not None and node.score < 0.001 for node in filtered_nodes):
+           or all(node.score is not None and node.score < 0.8 for node in filtered_nodes):
             return ""
         
         response = self._synthesizer.synthesize(query, nodes)

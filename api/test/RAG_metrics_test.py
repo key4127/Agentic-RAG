@@ -45,18 +45,29 @@ def main():
 
             raw_nodes = retriever.retrieve(query)
             get_nodes = reranker.postprocess_nodes(raw_nodes, query_bundle)
+
+            nodes_scores = [
+                node.score
+                for node in get_nodes
+            ]
+            print(nodes_scores)
+
             get_nodes = [
                 node.node_id
                 for node in get_nodes
-                if node.score is not None and node.score >= 1e-3
+                if node.score is not None and node.score >= 0.8
             ]
 
             right_nums = len(test["ids"])
             get_nums = len(get_nodes)
             right_get_nums = metric_test(test["ids"], get_nodes)
 
-            precision = right_get_nums / get_nums
-            recall = right_get_nums / right_nums
+            precision = right_get_nums / get_nums \
+                        if get_nums != 0 \
+                        else 1.0
+            recall = right_get_nums / right_nums \
+                        if right_nums != 0 \
+                        else 0
             f1 = 2 * precision * recall / (precision + recall) \
                     if precision + recall != 0 \
                     else 0
