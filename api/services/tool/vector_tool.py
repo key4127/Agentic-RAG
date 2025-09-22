@@ -14,7 +14,7 @@ class VectorTool:
         self._reranker = reranker
         self._synthesizer = synthesizer
 
-    def vector_db_search(self, query: str):
+    def query(self, query: str):
         """
         This is a tool function to retrieve docs that are related to queries.
         Docs contains information about many famous courses \ 

@@ -5,13 +5,13 @@ from api.services.tool.web_tool import WebTool
 class CourseAgent():
     def __init__(
         self,
-        llm, 
+        llm,
         vector_tool: VectorTool, 
         web_tool: WebTool
     ):
         self.tools = [
-            vector_tool.vector_db_search,
-            web_tool.search_web
+            vector_tool.query,
+            web_tool.query
         ]
         self.agent = FunctionAgent(
             tools=self.tools,
