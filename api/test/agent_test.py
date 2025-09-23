@@ -45,7 +45,7 @@ async def main():
         web_tool
     )
 
-    skip_lines = 0
+    skip_tests = 0
     tested_lines = 0
     correct_num = 0
     n = 0
@@ -56,7 +56,7 @@ async def main():
             n = len(lines)
 
             for i in range(n // 2):
-                if i >= skip_lines:
+                if i >= skip_tests:
                     global tool
                     tool = ""
 
@@ -74,10 +74,13 @@ async def main():
                     
                     tested_lines += 2
     except Exception:
-        print(f'{tested_lines} tests finished')
+        print(f'{tested_lines // 2} tests finished')
         print(f'{correct_num} tests passed')
 
-    print(f'result: {correct_num / n}')
+    print(f'{tested_lines // 2} tests finished')
+    print(f'{correct_num} tests passed')
+    print(f'{skip_tests + tested_lines // 2} tests passed totally')
+    print(f'result: {correct_num / n * 2}')
 
 
 if __name__ == "__main__":
