@@ -100,7 +100,10 @@ class CourseAgent():
         else:
             final_response = response
 
-        return final_response
+        return {
+            "answer": final_response,
+            "tool": tool
+        }
 
     async def function_call(self, query: str, tool_name: str):
         return await self.tools[tool_name](query)
