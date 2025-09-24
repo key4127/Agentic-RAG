@@ -111,8 +111,7 @@ def get_agent(
 ) -> CourseAgent:
     global course_agent
     if course_agent is None:
-        llm = LlamaIndexSettings.llm
-        course_agent = CourseAgent(llm, vector_tool, web_tool)
+        course_agent = CourseAgent(vector_tool, web_tool)
     return course_agent
 
 def close_all() -> None:

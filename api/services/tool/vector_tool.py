@@ -14,7 +14,7 @@ class VectorTool:
         self._reranker = reranker
         self._synthesizer = synthesizer
 
-    def query(self, query: str):
+    async def query(self, query: str):
         """
         This is a tool function to retrieve docs that are related to queries.
         Docs contains information about many famous courses \ 
@@ -30,7 +30,7 @@ class VectorTool:
             print(node.score)
 
         if not filtered_nodes \
-           or all(node.score is not None and node.score < 0.8 for node in filtered_nodes):
+           or all(node.score is not None and node.score < 1e-2 for node in filtered_nodes):
             return ""
         
         response = self._synthesizer.synthesize(query, nodes)
